@@ -1,6 +1,10 @@
 <template>
     <div>
-        <h1 class="title">Search for National Parks</h1>
+        <div class="title">Bear Tracks
+            <img src="christmas-tree.png" alt="Icons
+            created by Pixel perfect - Flaticon" style="max-width: 40px;">
+        </div>
+        <h4 class="sub-title">Aventure is just a short hike away</h4>
         <div class="search-container">
             <input class="search" type="text" v-model="searchQuery" placeholder="Enter state name or abbreviation"
                 @keyup="handleAutocomplete" @keyup.enter="searchParks">
@@ -13,29 +17,32 @@
                     {{ suggestion }}
                 </h4>
             </div>
-
         </div>
 
-        <div v-if="parks.length > 0">
-            <div v-for="park in parks" :key="park.id">
-                <h2>{{ park.name }}</h2>
+        <div class="parks-container" v-if="parks.length > 0">
+            <div v-for="park in parks" :key="park.id" class="park-container" @click="selectPark(park)">
+                <div class="park-name">{{ park.name }}</div>
                 <img :src="park.images[0].url" :alt="park.name + ' image'" style="max-width: 500px;">
-                <!-- <ul>
-                    <li v-for="activity in park.activities" :key="activity.id">
-                        {{ activity.name }}
-                    </li>
-                </ul>
-                <ul>
-                    <li v-for="image in park.images" :key="image.url">
-                        <img :src="image.url" :alt="park.name + ' image'" style="max-width: 200px;">
-                    </li>
-                </ul> -->
-                <p>{{ park.addresses[0].city }}, {{ park.addresses[0].stateCode }}</p>
-                <p>{{ park.description }}</p>
+                <div class="park-address">{{ park.addresses[0].city }}, {{ park.addresses[0].stateCode }}</div>
+                <div class="park-description">{{ park.description }}</div>
             </div>
         </div>
+        <transition name="park-details">
+            <div v-if="selectedPark" class="park-details">
+                <button class="close-button" @click="closeParkDetails">&times;</button>
+                <h2>{{ selectedPark.name }}</h2>
+                <p>{{ selectedPark.description }}</p>
+            </div>
+        </transition>
+
     </div>
+    <footer class="footer">
+        <a href="https://www.flaticon.com/free-icons/christmas-tree" title="christmas tree icons"
+            style="text-decoration: none; color: black;">Icons
+            created by Pixel perfect - Flaticon</a>
+    </footer>
 </template>
+
 
 <script>
 import states from '@/components/stateFullAndAbbreviated.js';
@@ -48,6 +55,8 @@ export default {
             suggestions: [],
             parks: [],
             selectedSuggestion: null,
+            selectedPark: null,
+            isParkSelected: false,
         }
     },
     methods: {
@@ -83,6 +92,14 @@ export default {
         selectSuggestion(suggestion) {
             this.searchQuery = suggestion;
             this.suggestions = [];
+        },
+        selectPark(park) {
+            this.selectedPark = park;
+            this.isParkSelected = true;
+        },
+        closeParkDetails() {
+            this.selectedPark = null;
+            this.isParkSelected = false;
         },
         async searchParks() {
             try {
@@ -121,6 +138,11 @@ export default {
     font-family: 'national-park', sans-serif;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 @font-face {
     font-family: 'national-park';
     src: url('/np-font/NationalPark-Light.otf') format('opentype'),
@@ -129,7 +151,83 @@ export default {
 .title {
     display: flex;
     justify-content: center;
+    font-size: 40px;
+    margin-bottom: 5px;
+    gap: 10px;
+    font-weight: 800;
+}
+
+.sub-title {
+    display: flex;
+    justify-content: center;
     margin-bottom: 5%;
+    font-style: italic;
+    color: forestgreen;
+}
+
+.parks-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.park-container {
+    width: 45%;
+    margin: 10px;
+    border: 1px solid #000000;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.park-container img {
+    max-width: 100%;
+}
+
+.park-name {
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.park-address {
+    font-size: 15px;
+    font-style: italic;
+}
+
+.park-description {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.park-details-enter-active,
+.park-details-leave-active {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.park-details-enter-from,
+.park-details-leave-to {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+.park-details {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70vh;
+    overflow-y: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.park-details.active {
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 9999;
 }
 
 .search-container {
@@ -176,5 +274,16 @@ button {
 
 .highlighted {
     background-color: #f0f0f0;
+}
+
+.footer {
+    position: fixed;
+    padding: 10px 10px 10px 10px;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    height: 40px;
+    background: rgb(255, 255, 255);
+    text-align: center;
 }
 </style>
