@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="body">
         <div class="title">Bear Tracks
             <img src="christmas-tree.png" alt="Icons
             created by Pixel perfect - Flaticon" style="max-width: 40px;">
@@ -22,25 +22,25 @@
         <div class="parks-container" v-if="parks.length > 0">
             <div v-for="park in parks" :key="park.id" class="park-container" @click="selectPark(park)">
                 <div class="park-name">{{ park.name }}</div>
-                <img :src="park.images[0].url" :alt="park.name + ' image'" style="max-width: 500px;">
                 <div class="park-address">{{ park.addresses[0].city }}, {{ park.addresses[0].stateCode }}</div>
                 <div class="park-description">{{ park.description }}</div>
+                <img class="image" :src="park.images[0].url" :alt="park.name + ' image'">
             </div>
         </div>
         <transition name="park-details">
             <div v-if="selectedPark" class="park-details">
                 <button class="close-button" @click="closeParkDetails">&times;</button>
-                <h2>{{ selectedPark.name }}</h2>
-                <p>{{ selectedPark.description }}</p>
+                <div class="details-park-name">{{ selectedPark.name }}</div>
+                <div class="details-park-description">{{ selectedPark.description }}</div>
             </div>
         </transition>
 
     </div>
-    <footer class="footer">
+    <!-- <footer class="footer">
         <a href="https://www.flaticon.com/free-icons/christmas-tree" title="christmas tree icons"
             style="text-decoration: none; color: black;">Icons
             created by Pixel perfect - Flaticon</a>
-    </footer>
+    </footer> -->
 </template>
 
 
@@ -138,11 +138,6 @@ export default {
     font-family: 'national-park', sans-serif;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-}
-
 @font-face {
     font-family: 'national-park';
     src: url('/np-font/NationalPark-Light.otf') format('opentype'),
@@ -155,6 +150,7 @@ body {
     margin-bottom: 5px;
     gap: 10px;
     font-weight: 800;
+    color: #2C3639;
 }
 
 .sub-title {
@@ -172,18 +168,49 @@ body {
 }
 
 .park-container {
-    width: 45%;
+    position: relative;
+    width: 100%;
     margin: 10px;
     border: 1px solid #000000;
+    border-left: none;
+    border-right: none;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     padding: 1rem;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    flex-direction: row;
+    align-items: start;
+    text-align: start;
+    overflow: hidden;
 }
 
-.park-container img {
-    max-width: 100%;
+.park-container::before,
+.park-container::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #575353;
+    transition: width 0.3s ease;
+}
+
+.park-container::before {
+    top: 0;
+}
+
+.park-container::after {
+    bottom: 0;
+}
+
+.park-container:hover::before,
+.park-container:hover::after {
+    width: 100%;
+}
+
+
+.image {
+    max-width: 350px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border: 1px solid #000000;
 }
 
 .park-name {
@@ -197,8 +224,8 @@ body {
 }
 
 .park-description {
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 550;
 }
 
 .park-details-enter-active,
@@ -209,23 +236,27 @@ body {
 .park-details-enter-from,
 .park-details-leave-to {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateX(100%);
 }
 
 .park-details {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70vh;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 70%;
     overflow-y: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
+    border: 1px solid #000000;
+    background-color: #efefef;
+}
+
+.details-park-name,
+.details-park-description {
+    background-color: #efefef;
 }
 
 .park-details.active {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
     z-index: 9999;
 }
@@ -239,7 +270,8 @@ body {
 .search {
     width: 20rem;
     border-top-left-radius: 4px;
-
+    color: #000000;
+    background-color: #ffffff;
 }
 
 button {
@@ -247,6 +279,8 @@ button {
     width: 7rem;
     border-top-right-radius: 4px;
     border-left: none;
+    color: #000000;
+    background-color: #ffffff;
 }
 
 .search:focus {
@@ -285,5 +319,41 @@ button {
     height: 40px;
     background: rgb(255, 255, 255);
     text-align: center;
+}
+
+@media screen and (max-width: 650px) {
+    .park-container {
+        width: 100%;
+    }
+
+    .image {
+        max-width: 100%;
+    }
+
+    .park-name {
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    .park-address {
+        font-size: 15px;
+        font-style: italic;
+    }
+
+    .park-details-enter-from,
+    .park-details-leave-to {
+        transform: translateY(100%);
+    }
+
+    .park-details {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .park-details.active {
+        transform: translateY(0);
+    }
 }
 </style>
