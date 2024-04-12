@@ -30,7 +30,7 @@
                         <img :src="image.url" :alt="park.name + ' image'" style="max-width: 200px;">
                     </li>
                 </ul> -->
-                <p>{{ park.address }}</p>
+                <p>{{ park.addresses[0].city }}, {{ park.addresses[0].stateCode }}</p>
                 <p>{{ park.description }}</p>
             </div>
         </div>
@@ -118,6 +118,12 @@ export default {
 * {
     margin: 0;
     box-sizing: border-box;
+    font-family: 'national-park', sans-serif;
+}
+
+@font-face {
+    font-family: 'national-park';
+    src: url('/np-font/NationalPark-Light.otf') format('opentype'),
 }
 
 .title {
