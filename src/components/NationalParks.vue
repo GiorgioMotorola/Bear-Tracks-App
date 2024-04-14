@@ -316,8 +316,9 @@ export default {
     height: 100%;
     width: 70%;
     overflow-y: auto;
-    border: 1px solid #000000;
+    border: 2px solid #797979;
     background-color: #efefef;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .details-image {
@@ -371,6 +372,31 @@ h2 {
     flex-direction: column
 }
 
+.details-park-name {
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.details-park-description {
+    display: flex;
+    justify-content: start;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.details-email-address,
+.details-phone-numbers,
+.phone-numbers {
+    display: flex;
+    justify-content: start;
+    font-weight: 300;
+    font-size: 10px;
+    font-style: italic;
+}
+
+
 .details-activities {
     margin-bottom: 10px;
 }
@@ -378,7 +404,6 @@ h2 {
 .activities {
     display: flex;
     flex-wrap: wrap;
-
     align-items: center;
 }
 
@@ -412,12 +437,14 @@ button {
     border-top-right-radius: 4px;
     border-left: none;
     color: #000000;
-    background-color: #ffffff;
+    background-color: #c4c3c3;
     cursor: pointer;
 }
 
 .close-button {
-    width: 100%;
+    width: 95%;
+    margin: .5rem;
+    border-left: 1px;
 }
 
 .search:focus {
