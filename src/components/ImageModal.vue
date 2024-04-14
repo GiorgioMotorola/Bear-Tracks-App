@@ -100,8 +100,8 @@ export default {
 @media screen and (max-width: 500px) {
     .modal-content {
         margin: 50% auto;
-        width: 85%;
-        padding: 10px;
+        width: 310px;
+        padding: 5px;
     }
 
     .modal-content img {
