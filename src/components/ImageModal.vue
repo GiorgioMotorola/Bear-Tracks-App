@@ -1,5 +1,5 @@
 <template>
-    <div class="modal">
+    <div class="modal" @click="closeModalOutside">
         <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>
             <img :src="image" alt="Enlarged Image" loading="lazy">
@@ -19,6 +19,11 @@ export default {
         closeModal() {
             this.$emit('close');
         },
+        closeModalOutside() {
+            if (event.target.classList.contains('modal')) {
+                this.closeModal();
+            }
+        }
     },
 }
 </script>
