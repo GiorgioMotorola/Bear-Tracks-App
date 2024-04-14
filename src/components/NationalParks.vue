@@ -32,9 +32,16 @@
                 <button class="close-button" @click="closeParkDetails">&times;</button>
                 <div class="details-park-name">{{ selectedPark.name }}</div>
                 <div class="details-park-description">{{ selectedPark.description }}</div>
+                <div class="details-park-images">
+                    <div class="details-image" v-for="image in selectedPark.images" :key="image.url"
+                        @click="openModal(image.url)">
+                        <img :src="image.url" :alt="selectedPark.name + ' image'">
+                    </div>
+                </div>
+
             </div>
         </transition>
-
+        <ImageModal :image="selectedImage" v-if="selectedImage" @close="closeModal" />
     </div>
     <!-- <footer class="footer">
         <a href="https://www.flaticon.com/free-icons/christmas-tree" title="christmas tree icons"
@@ -47,6 +54,7 @@
 <script>
 import states from '@/components/stateFullAndAbbreviated.js';
 import apiKey from '@/components/apiKey.js';
+import ImageModal from '@/components/ImageModal.vue';
 
 export default {
     data() {
@@ -57,6 +65,7 @@ export default {
             selectedSuggestion: null,
             selectedPark: null,
             isParkSelected: false,
+            selectedImage: null,
         }
     },
     methods: {
@@ -101,6 +110,12 @@ export default {
             this.selectedPark = null;
             this.isParkSelected = false;
         },
+        openModal(imageUrl) {
+            this.selectedImage = imageUrl;
+        },
+        closeModal() {
+            this.selectedImage = null;
+        },
         async searchParks() {
             try {
                 let stateCode = this.searchQuery.toUpperCase();
@@ -127,6 +142,9 @@ export default {
                 this.parks = [];
             }
         }
+    },
+    components: {
+        ImageModal,
     }
 }
 </script>
@@ -175,7 +193,6 @@ export default {
     border-left: none;
     border-right: none;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    padding: 1rem;
     flex-direction: row;
     align-items: start;
     text-align: start;
@@ -250,8 +267,30 @@ export default {
     background-color: #efefef;
 }
 
+.details-image {
+    float: left;
+    padding: 3px;
+    background-color: #efefef;
+}
+
+.details-image::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.details-park-images img {
+    width: 150px;
+    height: 150px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border: 1px solid #000000;
+    background-color: #efefef;
+    cursor: pointer;
+}
+
 .details-park-name,
-.details-park-description {
+.details-park-description,
+.details-park-images {
     background-color: #efefef;
 }
 
@@ -274,6 +313,10 @@ export default {
     background-color: #ffffff;
 }
 
+.search:focus {
+    border: 3px solid #000000;
+}
+
 button {
     padding: .7rem;
     width: 7rem;
@@ -281,6 +324,7 @@ button {
     border-left: none;
     color: #000000;
     background-color: #ffffff;
+    cursor: pointer;
 }
 
 .search:focus {
@@ -354,6 +398,10 @@ button {
 
     .park-details.active {
         transform: translateY(0);
+    }
+
+    .park-container {
+        margin-right: 0rem;
     }
 }
 </style>
