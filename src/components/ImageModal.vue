@@ -101,7 +101,10 @@ export default {
     .modal-content {
         margin: 50% auto;
         width: 310px;
-        padding: 5px;
+        padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: .5px;
     }
 
     .modal-content img {
