@@ -29,16 +29,55 @@
         </div>
         <transition name="park-details">
             <div v-if="selectedPark" class="park-details">
-                <button class="close-button" @click="closeParkDetails">&times;</button>
+                <button class="close-button" @click="closeParkDetails">CLOSE</button>
                 <div class="details-park-name">{{ selectedPark.name }}</div>
                 <div class="details-park-description">{{ selectedPark.description }}</div>
+                <div class="details-email-address" v-for="emailAddress in selectedPark.contacts.emailAddresses"
+                    :key="emailAddress.emailAddress">
+                    {{ emailAddress.emailAddress }}
+                </div>
+                <div class="details-phone-numbers" v-if="selectedPark.contacts.phoneNumbers.length">
+                    <div class="phone-numbers" v-for="phoneNumber in selectedPark.contacts.phoneNumbers"
+                        :key="phoneNumber.phoneNumber">
+                        {{ phoneNumber.type }}: {{ phoneNumber.phoneNumber }}
+                    </div>
+
+                </div>
+                <div class="details-activities">
+                    <div class="activities" style=" background-color: #efefef;">
+                        <strong style=" background-color: #efefef;">Activities: </strong>
+                        <span v-for="(activity, index) in selectedPark.activities" :key="index">
+                            &#160;{{ activity.name }}{{ index !== selectedPark.activities.length - 1 ? ', ' : '' }}
+                        </span>
+                    </div>
+                </div>
+                <div class="details-directions">
+                    <div v-if="selectedPark.directionsInfo">
+                        <p><strong>Directions:</strong> {{ selectedPark.directionsInfo }}</p>
+                    </div>
+                    <div v-else>
+                        <p>No directions available.</p>
+                    </div>
+                    <div class="park-standard-hours">
+                        <h2>Standard Hours</h2>
+                        <ul v-for="(hours, day) in selectedPark.operatingHours[0].standardHours" :key="day">
+                            <strong>{{ day }}</strong>: {{ hours }}
+                        </ul>
+                    </div>
+                    <div v-if="selectedPark.directionsUrl">
+                        <p><strong>Directions URL:</strong> <a :href="selectedPark.directionsUrl">{{
+                selectedPark.directionsUrl }}</a></p>
+                    </div>
+                </div>
+                <div class="google-maps-link" v-if="selectedPark">
+                    <a :href="googleMapsLink" target="_blank">View on Google Maps</a>
+                </div>
                 <div class="details-park-images">
                     <div class="details-image" v-for="image in selectedPark.images" :key="image.url"
                         @click="openModal(image.url)">
                         <img :src="image.url" :alt="selectedPark.name + ' image'">
                     </div>
                 </div>
-
             </div>
         </transition>
         <ImageModal :image="selectedImage" v-if="selectedImage" @close="closeModal" />
@@ -49,7 +88,6 @@
             created by Pixel perfect - Flaticon</a>
     </footer> -->
 </template>
-
 
 <script>
 import states from '@/components/stateFullAndAbbreviated.js';
@@ -66,6 +104,17 @@ export default {
             selectedPark: null,
             isParkSelected: false,
             selectedImage: null,
+        }
+    },
+
+    computed: {
+        googleMapsLink() {
+            if (this.selectedPark && this.selectedPark.latitude && this.selectedPark.longitude) {
+                const latitude = this.selectedPark.latitude;
+                const longitude = this.selectedPark.longitude;
+                return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+            }
+            return '';
         }
     },
     methods: {
@@ -224,7 +273,6 @@ export default {
     width: 100%;
 }
 
-
 .image {
     max-width: 350px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -291,9 +339,45 @@ export default {
 
 .details-park-name,
 .details-park-description,
-.details-park-images {
+.details-park-images,
+.details-email-address,
+.details-phone-numbers,
+.details-activities,
+.phone-numbers,
+.activites,
+p,
+h2,
+span,
+strong,
+a,
+ul,
+li,
+.google-maps-link,
+.park-standard-hours {
     background-color: #efefef;
 }
+
+.details-park-name,
+.details-park-description,
+.details-email-address,
+.details-phone-numbers,
+.phone-numbers,
+h2 {
+    display: flex;
+    flex-direction: column
+}
+
+.details-activities {
+    margin-bottom: 10px;
+}
+
+.activities {
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: center;
+}
+
 
 .park-details.active {
     transform: translateX(0);
@@ -326,6 +410,10 @@ button {
     color: #000000;
     background-color: #ffffff;
     cursor: pointer;
+}
+
+.close-button {
+    width: 100%;
 }
 
 .search:focus {

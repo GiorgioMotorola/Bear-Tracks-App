@@ -60,7 +60,7 @@ export default {
     font-size: 70px;
     font-weight: bold;
     cursor: pointer;
-    background-color: #777777;
+    background-color: transparent;
 }
 
 @media screen and (max-width: 1200px) {
