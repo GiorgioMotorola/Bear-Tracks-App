@@ -2,7 +2,7 @@
     <div class="modal">
         <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>
-            <img :src="image" alt="Enlarged Image">
+            <img :src="image" alt="Enlarged Image" loading="lazy">
         </div>
     </div>
 </template>
@@ -24,49 +24,94 @@ export default {
 </script>
 
 <style scoped>
-/* Styles for the modal */
 .modal {
     display: block;
-    /* Ensure modal is displayed */
     position: fixed;
-    /* Position the modal */
     z-index: 9999;
-    /* Set the z-index to ensure it's above other content */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Semi-transparent background */
     overflow: auto;
 }
 
 .modal-content {
     position: relative;
     background-color: #fefefe;
-    /* Modal background color */
-    margin: 15% auto;
-    padding: 20px;
+    margin: 2% auto;
+    padding: 10px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 700px;
-    /* Set max width for modal */
+    width: 900px;
+}
+
+.modal-content img {
+    width: 900px;
+    height: 900px;
 }
 
 .close {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
-    color: #aaa;
-    font-size: 28px;
+    margin-right: 25px;
+    margin-top: 1px;
+    color: #ffffff;
+    font-size: 70px;
     font-weight: bold;
     cursor: pointer;
+    background-color: #777777;
 }
 
-/* Hide close button on mobile */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1200px) {
+    .modal-content {
+        margin: 10% auto;
+        max-width: 600px;
+    }
+
+    .modal-content img {
+        width: 600px;
+        height: 600px;
+    }
+
     .close {
-        display: none;
+        font-size: 60px;
+        margin-right: 20px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .modal-content {
+        margin: 25% auto;
+        max-width: 400px;
+    }
+
+    .modal-content img {
+        width: 400px;
+        height: 400px;
+    }
+
+    .close {
+        font-size: 50px;
+        margin-right: 15px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .modal-content {
+        margin: 50% auto;
+        width: 85%;
+        padding: 10px;
+    }
+
+    .modal-content img {
+        width: 310px;
+        height: 310px;
+    }
+
+    .close {
+        font-size: 40px;
+        margin-right: 5px;
     }
 }
 </style>

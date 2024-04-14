@@ -24,7 +24,7 @@
                 <div class="park-name">{{ park.name }}</div>
                 <div class="park-address">{{ park.addresses[0].city }}, {{ park.addresses[0].stateCode }}</div>
                 <div class="park-description">{{ park.description }}</div>
-                <img class="image" :src="park.images[0].url" :alt="park.name + ' image'">
+                <img class="image" :src="park.images[0].url" :alt="park.name + ' image'" loading="lazy">
             </div>
         </div>
         <transition name="park-details">
@@ -197,6 +197,7 @@ export default {
     align-items: start;
     text-align: start;
     overflow: hidden;
+    padding: 10px;
 }
 
 .park-container::before,
@@ -401,6 +402,7 @@ button {
     }
 
     .park-container {
+        margin-left: 0rem;
         margin-right: 0rem;
     }
 }
