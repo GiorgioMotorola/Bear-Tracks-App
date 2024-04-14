@@ -236,7 +236,7 @@ export default {
 
 .park-container {
     position: relative;
-    width: 100%;
+    width: 50%;
     margin: 10px;
     border: 1px solid #000000;
     border-left: none;
@@ -247,6 +247,7 @@ export default {
     text-align: start;
     overflow: hidden;
     padding: 10px;
+    cursor: pointer;
 }
 
 .park-container::before,
@@ -282,16 +283,19 @@ export default {
 .park-name {
     font-size: 30px;
     font-weight: 800;
+    margin-bottom: .25rem
 }
 
 .park-address {
     font-size: 15px;
     font-style: italic;
+    margin-bottom: .25rem
 }
 
 .park-description {
     font-size: 15px;
     font-weight: 550;
+    margin-bottom: .25rem
 }
 
 .park-details-enter-active,
@@ -492,6 +496,7 @@ button {
     .park-container {
         margin-left: 0rem;
         margin-right: 0rem;
+        width: 100%;
     }
 }
 </style>
